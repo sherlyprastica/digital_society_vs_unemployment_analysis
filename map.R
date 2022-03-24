@@ -17,7 +17,7 @@ head(peta_dunia)
 #load data pengguna internet
 internet_user <- read.csv("https://raw.githubusercontent.com/sherlyprastica/digital_society_vs_unemployment_analysis/main/persebaran_pengguna_internet_fix_202203161536.csv")
 internet_user <- internet_user %>% mutate(persentase_2015 = (`X2015_fix`/jumlah_penduduk_2015)*100, persentase_2016 = (`X2016_fix`/jumlah_penduduk_2016)*100, persentase_2017 = (`X2017_fix`/jumlah_penduduk_2017)*100, persentase_2018 = (`X2018_fix`/jumlah_penduduk_2018)*100, persentase_2019 = (`X2019_fix`/jumlah_penduduk_2019)*100, persentase_2020 = (`X2020_fix`/jumlah_penduduk_2020)*100)
-internet_user <- internet_user %>% rename(NAME_1=ï..NAME_1)
+internet_user <- internet_user %>% rename(NAME_1=Ã¯..NAME_1)
 
 #show map all world
 ggplot(peta_dunia, aes(x=long, y=lat, group=group)) + geom_polygon(fill='lightgray', colour='white')
@@ -25,7 +25,7 @@ ggplot(peta_dunia, aes(x=long, y=lat, group=group)) + geom_polygon(fill='lightgr
 #show indonesian map
 peta_indonesia <- map_data('world', region = 'Indonesia')
 indonesia_map <- ggplot(peta_indonesia, aes(x=long, y=lat, group=group)) + geom_polygon(fill='lightgray', colour='white')
-# Indonesia terletak antara 6° LU - 11° LS dan 95° BT - 141° BT.
+# Indonesia terletak antara 6Â° LU - 11Â° LS dan 95Â° BT - 141Â° BT.
 indonesia_map <- ggplot(peta_dunia, aes(x=long, y=lat, group=group)) + geom_polygon(fill='lightgray', colour='white') + xlim(95, 141) + ylim(-11, 6)
 #memotong berdasar provinsi
 indonesia1 <- getData('GADM', country='IDN', level=1)
