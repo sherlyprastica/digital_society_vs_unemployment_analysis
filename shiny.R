@@ -193,6 +193,7 @@ server <- function(input,output){
         viz2 <- viz2 + geom_line(mapping = aes(x = Jumlah_Penduduk, y = Pengguna_Internet), data = jumlah_penduduk, color="black", size=1)
         viz2 <- viz2 + labs(x="Jumlah Penduduk", y="Jumlah Pengguna Internet", title="Apakah Pertambahan Jumlah Penduduk Mempengaruhi Pertambahan Penggunaan Internet ?")
         viz2 <- viz2 + theme(axis.text.x = element_text(hjust = 0.5), axis.text.y.left = element_text(hjust = 0.5), plot.title = element_text(hjust = 0.5, vjust = 1), plot.caption = element_text(size = 8))
+        viz2 <- viz2 + geom_line(mapping = aes(x = Jumlah_Penduduk, y = Pengguna_Internet), data = jumlah_penduduk, stat = "smooth", method = "lm")
         viz2 <- ggplotly(viz2)
         viz2
       })
@@ -201,6 +202,7 @@ server <- function(input,output){
       output$plot4 <- renderPlotly({
         viz5 <- ggplot(data=pengangguran, aes(y=pengguna_internet, x=Jumlah.Pengangguran)) + geom_point(size=2)
         viz5 <- viz5 + labs(x="Jumlah Pengangguran", y="Pengguna Internet", title="Korelasi Antara Jumlah Pengangguran dengan Jumlah Pengguna Internet") + theme(plot.title = element_text(hjust = 0.5, vjust = 1))
+        viz5 <- viz5 + geom_line(mapping = aes(y=pengguna_internet, x=Jumlah.Pengangguran), data = pengangguran, stat = "smooth", method = "lm")
         viz5 <- ggplotly(viz5)
         viz5
       })
