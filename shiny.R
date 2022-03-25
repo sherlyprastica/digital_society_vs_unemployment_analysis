@@ -27,14 +27,14 @@ sepuluh_tahun_trakhir <- jumlah_penduduk %>% filter(between(`Tahun`,2011, 2020))
 pengangguran <- read_xlsx("./fix_pengangguran.xlsx")
 names(pengangguran) <- make.names(names(pengangguran))
 pengangguran <- pengangguran %>% filter(Jumlah.Pengangguran > 0)
-mean_pengangguran <- pengangguran %>% select(`Tahun`, Jumlah.Pengangguran) %>% mutate(rata_pengangguran = mean(Jumlah.Pengangguran))
+mean_pengangguran <- pengangguran %>% dplyr::select(`Tahun`, Jumlah.Pengangguran) %>% mutate(rata_pengangguran = mean(Jumlah.Pengangguran))
 
 
 user_internet_umur <- read_xlsx('./pengguna internet berdasarkan umur.xlsx')
-user_internet_umur <- user_internet_umur %>% select(`Umur`, mean)
+user_internet_umur <- user_internet_umur %>% dplyr::select(`Umur`, mean)
 #View(user_internet_umur)
 
-peta_dunia <- map_data('world')
+#peta_dunia <- map_data('world')
 #head(peta_dunia)
 
 #load data pengguna internet
@@ -51,7 +51,7 @@ pengangguran_umur <- pengangguran_umur %>% arrange(`umur`)
 pengangguran <- read_xlsx("./fix_pengangguran.xlsx")
 names(pengangguran) <- make.names(names(pengangguran))
 pengangguran <- pengangguran %>% filter(Jumlah.Pengangguran > 0)
-mean_pengangguran <- pengangguran %>% select(`Tahun`, Jumlah.Pengangguran) %>% mutate(rata_pengangguran = mean(Jumlah.Pengangguran))
+mean_pengangguran <- pengangguran %>% dplyr::select(`Tahun`, Jumlah.Pengangguran) %>% mutate(rata_pengangguran = mean(Jumlah.Pengangguran))
 
 
 #setting for viz theme-----------------------------------------------------------------------------------------------------
@@ -71,14 +71,24 @@ blank_theme <- theme_minimal()+
 
 #shiny ------------------------------------------------------------------------------------------
 ui <- dashboardPage(skin = "yellow",
-  dashboardHeader(title = "My Dashboard"),
+  dashboardHeader(title = "Digital SOciety vs. Unemployment Cases in Indonesia", titleWidth = 1000),
   dashboardSidebar(
     menuItem("Article", tabName = "background", icon = icon("dashboard")),
-    menuItem("Digital Society", tabName = "digital", icon = icon("th")),
-    menuItem("Unemployment", tabName = "unemployment", icon = icon("th")),
-    menuItem("Correlation", tabName = "correlation", icon = icon("th"))
+    menuItem("Graph", icon = icon("bar-chart-o"), startExpanded = TRUE,
+             menuSubItem("Data about Internet User", tabName = "digital"),
+             menuSubItem("Data about Unemployment Cases", tabName = "unemployment"),
+             menuSubItem("Correlation", tabName = "correlation")
+    )
   ),
   dashboardBody(
+    fluidRow(
+      box(width = 10, background="yellow",
+        h1("Digital Society vs Unemployment Cases in Indonesia"),
+        h3("Apakah benar Digital Society di Indonesia mempengaruhi kasus pengangguran di Indonesia ?"),
+        h5("Let's check for more information"),
+        h6("\n Data Source : bps.go.id, Asosiasi Penyelenggara Jasa Internet Indonesia, data.worldbank.org, databooks.katadata.co.id")
+      )
+    ),
     tabItems(
       tabItem("background",
         h1("Memasuki Era Society 5.0 dan Persiapan SDM Indonesia Menghadapi Digital Society"),
@@ -86,7 +96,7 @@ ui <- dashboardPage(skin = "yellow",
         h3("Sedikit pendahuluan, Digital Society  adalah kerangka berpikir mendasar antara interaksi manusia dengan teknologi yang bertujuan untuk membuat kehidupan yang lebih baik, jadi bisa dibilang Society 5.0 adalah solusi dari revolusi industri 4.0, jika pada revolusi industri 4.0 menggaungkan kecerdasan buatan maka di era Society 5.0 adalah bagaimana manusia bisa memanfaatkan teknologi tersebut guna menuju kehidupan yang lebih baik di masa mendatang.
            Lalu apakah kita sudah siap menghadapi era tersebut? Garis besarnya adalah kesiapan yang kurang dari pemerintah
            Indonesia dalam menghadapi Era Society 5.0, lalu tingginya angka pengangguran  di Indonesia dan yang terakhir kekeliruan masyarakat Indonesia dalam menggunakan teknologi digital."),
-        h3("Bersama dengan itu, data yang diambil dari Badan Pusat Statistik melaporkan jumlah pengangguran periode Agustus 2020 mengalami peningkatan sebanyak 2,67 juta orang. Dengan demikian, jumlah angkatan kerja di Indonesia yang menganggur menjadi sebanyak 9,77 juta orang. Angka tersebut sudah masuk kedalam kategori cukup banyak. Dengan angka pengangguran yang cukup tinggi bukan tidak mungkin Indonesia sulit beradaptasi dengan era Society 5.0."),
+        h2("Bersama dengan itu, data yang diambil dari Badan Pusat Statistik melaporkan jumlah pengangguran periode Agustus 2020 mengalami peningkatan sebanyak 2,67 juta orang. Dengan demikian, jumlah angkatan kerja di Indonesia yang menganggur menjadi sebanyak 9,77 juta orang. Angka tersebut sudah masuk kedalam kategori cukup banyak. Dengan angka pengangguran yang cukup tinggi bukan tidak mungkin Indonesia sulit beradaptasi dengan era Society 5.0."),
         h3("Jika dilihat dari alasan yang dipaparkan diatas dan melonjaknya angka pengangguran yang terjadi di Indonesia itu bisa saja terjadi karena kurangnya daya saing SDM Indonesia, seharusnya pemerintah mengevaluasi proses pembelajaran dari tingkat yang paling rendah hingga ke tingkat perguruan tinggi, dan mengubah kurikulum yang ada lalu disesuaikan dengan kebutuhan pasar, agar terciptanya SDM yang kompetitif dan mumpuni guna menghadapi Era Society 5.0. Bisa juga dengan mengadakan pelatihan kerja yang mengarah kepada kesiapan SDM Indonesia untuk memahami dan menguasai segala aspek yang dibutuhkan oleh SDM Indonesia dalam era digital ini, guna mengurangi angka pengangguran yang ada di Indonesia.
            Tetapi, fakta yang terjadi hari ini pemerintah kurang mengedukasi dan mengevaluasi apa yang saat ini terjadi dan apa yang akan kita hadapi, pemerintah belum mengambil langkah banyak dalam mempersiapkan SDM yang kompetitif untuk era ini sehingga lulusan dari pendidikan di Indonesia kurang dicari dan kurang diminati karena tidak sesuai dengan kebutuhan pasar saat ini. Lalu banyaknya masyarakat Indonesia yang kurang bisa mengoperasikan teknologi digital yang ada karena keterbatasan pemahaman, dan kurangnya kesiapan sehingga menimbulkan angka pengangguran yang cukup tinggi.
            Menyinggung masalah tingginya angka pengangguran yang terjadi di Indonesia maka pembahasan ini tidak bisa dipisahkan dengan ketersediaan lapangan pekerjaan yang ada. Timbul pertanyaan, di era Society 5.0 yang akan kita hadapi apa sebenarnya pekerjaan yang relevan dan banyak dibutuhkan? Dilansir dari akun instagram ditjen dikti ada beberapa pekerjaan yang cocok di era Society 5.0, seperti Web Developer, App Developer, SEO (Search Engine Optimisation), Content Creator, dan juga Social Media Specialist. Jika ditelisik kembali pekerjaan yang disebutkan adalah pekerjaan yang berhubungan dengan teknologi informasi, maka pendidikan yang mengarah kesana dan juga pengembangan SDM untuk pemahaman tentang teknologi informasi bisa menjadi senjata ampuh bagi Indonesia untuk bisa menekan angka pengangguran dan semakin siap menghadapi era Society 5.0.
@@ -100,24 +110,22 @@ ui <- dashboardPage(skin = "yellow",
       tabItem("digital",
               h3("Graph of Digital Society Data"),
               box(plotlyOutput("plot1"), width = 20),
-              box(plotOutput("plot2"), width = 5),
-              box(selectInput(
-                "feature", "Data :", c("Pengguna Internet 10 Tahun Terakhir","Rata-rata Umur Pengguna Internet", "Peta Persebaran Pengguna Internet")
-              ))
+              box(imageOutput("map"), width = 20),
+              box(plotOutput("plot2"), width = 20)
       ),
       tabItem("unemployment",
-              h3("Graph of Unemployment Data"),
+              h3("Graph of Unemployment Cases"),
               box(plotlyOutput("plot3"), width = 20),
               box(selectInput(
                 "feature2", "Data :", c("Kondisi Pengangguran di Indonesia","Pengangguran di Indonesia Berdasarkan Umur")
-              ))
+              ), width = 20, background="yellow")
       ),
       tabItem("correlation",
               h3("Graph of correlation of the Data"),
               box(plotlyOutput("plot4"), width = 20),
               box(selectInput(
                 "feature3", "Data :", c("Korelasi Antara Banyaknya Jumlah Penduduk dengan Jumlah Pengguna Internet","Korelasi Antara Banyaknya Pengguna Internet dengan Banyaknya Penduduk yang Pengangguran")
-              ))
+              ), width = 20, background="yellow")
       )
   )
 )
@@ -125,7 +133,6 @@ ui <- dashboardPage(skin = "yellow",
 
 server <- function(input,output){
   observe({
-    if(input$feature == "Pengguna Internet 10 Tahun Terakhir"){
       output$plot1 <- renderPlotly({
         viz <- ggplot(data = sepuluh_tahun_trakhir, aes(`Tahun`)) + scale_x_continuous(breaks = c(2011:2020)) + geom_col(aes(y=Jumlah_Penduduk), color="black", fill="lightblue") 
         viz <- viz + geom_text(aes(y=Jumlah_Penduduk, label=Jumlah_Penduduk), position=position_dodge(width=1), vjust=-1)
@@ -137,8 +144,7 @@ server <- function(input,output){
         viz <- ggplotly(viz)
         viz
       })
-    }
-    if(input$feature == "Rata-rata Umur Pengguna Internet"){
+
       output$plot2 <- renderPlot({
         viz3 <- ggplot(data=user_internet_umur, aes(x="", y=mean, fill=`Umur`)) 
         viz3 <- viz3 + geom_bar(width = 1, stat = "identity")
@@ -148,31 +154,14 @@ server <- function(input,output){
         viz3 <- viz3 + labs(title = "Rata-rata Pengguna Internet Berdasarkan Umur") + theme(plot.title = element_text(hjust = 0.5, vjust = 1))
         viz3
       })
-    }
-    if(input$feature == "Peta Persebaran Pengguna Internet"){
-      output$plot1 <- renderPlotly({
-      
-      #show map all world
-      ggplot(peta_dunia, aes(x=long, y=lat, group=group)) + geom_polygon(fill='lightgray', colour='white')
-      
-      #show indonesian map
-      peta_indonesia <- map_data('world', region = 'Indonesia')
-      indonesia_map <- ggplot(peta_indonesia, aes(x=long, y=lat, group=group)) + geom_polygon(fill='lightgray', colour='white')
-      # Indonesia terletak antara 6? LU - 11? LS dan 95? BT - 141? BT.
-      indonesia_map <- ggplot(peta_dunia, aes(x=long, y=lat, group=group)) + geom_polygon(fill='lightgray', colour='white') + xlim(95, 141) + ylim(-11, 6)
-      #memotong berdasar provinsi
-      indonesia1 <- getData('GADM', country='IDN', level=1)
-      ind1 <- readRDS('gadm36_IDN_1_sp.rds')
-      ind1A <- fortify(ind1)
-      warna <- rainbow(length(unique(ind1A$id)))
-      ggplot(peta_indonesia, aes(x=long, y=lat, group=group)) + geom_polygon(data=ind1A, aes(x=long, y=lat, group=group, fill=id), color='grey')
-      ind1@data$id <- rownames(ind1@data)
-      ind1B <- plyr::join(ind1A, ind1@data, by="id")
-      ind2B <- plyr::join(ind1B, internet_user, by="NAME_1")
-      viz_map <- ggplot(peta_indonesia, aes(x=long, y=lat, group=group)) + geom_polygon(data=ind2B, aes(x=long, y=lat, group=group, fill=`persentase_2020`), color='grey') + labs(title="Peta Persebaran Pengguna Internet di Indonesia pada Tahun 2020")
-      viz_map <- ggplotly(viz_map)
-      viz_map })
-    }
+    
+      output$map <- renderImage({
+        # When input$n is 1, filename is ./images/image1.jpeg
+        filename <- normalizePath(file.path('./fix', paste('fix', input$n, '.png', sep='')))
+        # Return a list containing the filename
+        list(src = "./fix.png")
+        }, deleteFile = FALSE)
+  
   })
   
   observe({
